@@ -1,0 +1,86 @@
+<html lang="en">
+  <head>
+    <title>Boba Tea</title>
+    <link href="main.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Permanent+Marker&family=Caveat&family=Rubik+Moonrocks&family=Shadows+Into+Light">
+    <script src="script.js"></script
+  </head>
+  <body>        
+    <header>
+      <div class="title spinY">Hello Everyone!</div>
+      <h1>I love boba tea</h1>
+      <h2>I hope you do too</h2>
+      <div class="big-border">
+        <p>Regular Size Image</p>
+        <img alt="cute picture" src=""/>
+      </div>
+    </header>
+
+    <button type="button" id="toggle">Tables disappear/reappear</button>
+    <table class="toggled">
+      <tr>
+        <td>
+          <div class="thumb">
+            <p>
+              Thumb!<br/>
+            </p>
+            <img alt="Thumbnail" src=""/>
+          </div>
+        </td>
+        <td>
+          Top Boba Tea Things:
+          <ul>
+            <li>It has boba!</li>
+            <li>It's sweet!</li>
+            <li>It has a cool straw!</li>
+          </ul>
+        </td>
+        <td>
+          <a href="https://en.wikipedia.org/wiki/Bubble_tea">Learn more about<br/>Boba Tea</a>
+        </td>
+        <td>
+          <div class="change-background">Click<br/>here</div>
+        </td>
+      </tr>
+    </table>
+
+    <table class="toggled data">
+      <caption>My favorite boba tea flavors</caption>
+      <thead>
+        <tr>
+          <th>Flavor</th>
+          <th>Color</th>
+          <th><span style="position:relative; top:-2px;">&#x25B2;</span>Ranking</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Taro</td>
+          <td>Purple</td>
+          <td>1</td>
+        </tr>
+        <tr>
+          <td>Thai Tea</td>
+          <td>Orange</td>
+          <td>2</td>
+        </tr>
+        <tr>
+          <td>Matcha</td>
+          <td>Green</td>
+          <td>3</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="comment-container">
+      <div>
+        <input type="text" id="comment" placeholder="Leave comment">
+        <button type="button" id="post-comment">Post comment</button>
+      </div>
+      <fieldset id="comments" class="comment-text">
+        <legend>Comments:</legend>
+      </fieldset>
+    </div>
+
+  </body>
+</html>
