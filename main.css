@@ -1,65 +1,24 @@
-body {
-  background-image: linear-gradient(109.6deg, rgba(156, 252, 248, 1) 11.2%, rgba(110, 123, 251, 1) 91.1%);
-  font-family: 'Shadows Into Light', serif;
-  text-align: center;
+.container-xxl {
+  background: linear-gradient(90deg, #f88379, white 50%, #f88379);
 }
 
-header {
-  text-align: center;
+.navbar {
+  background-color: cyan;
 }
 
 .title {
-  display: inline-block;
   font-family: 'Rubik Moonrocks', serif;
   font-weight: normal;
-  font-size: 50px;
+  font-size: 40px;
 }
 
-h1, h2 {
+h3, h4 {
   font-family: 'Permanent Marker';
 }
 
-.thumb {
-  display: inline-block;
-  border: 5px solid hotpink;
-  text-align: center;
-  padding: 10px
-}
-.thumb img {
-  border: 2px solid grey;
-  width: 80px;  
-}
-
-.big-border {
-  display: inline-block;
-  border: 20px solid gold;
-  margin-bottom: 40px;
-}
-.big-border img {
-  width: 400px;
-}
-
-table {
-  margin: 20px auto;
-  border-collapse: separate;
-  border-spacing: 10px;
-  height: 200px;
-  background: rgba(0, 0, 0, 0);
-}
-
-td {
-  border: 5px ridge lightyellow;
-  padding: 10px;
-}
-
-p {
-  font-size: 25px;
-  margin: 1px
-}
 
 a:link {
   text-decoration: underline;
-  color: cornsilk;  
 }
 a:visited {
   text-decoration: underline;
@@ -82,60 +41,12 @@ a:hover {
 }
 
 .change-background {
-  height: 100%;
-  width: 100px;
-  display: inline-flex;
-  text-align: center;
-  justify-content: center;
-  align-content: center;
-  flex-direction: column;
   cursor: pointer;
-  color: white;
   background-color: black;
-  font-weight: bold;
-}
-
-button {
-  font-family: 'Shadows Into Light', serif;
-  font-size: inherit;
-  background-color: lightpink;
-  margin: 0 auto;
-  display: block;
-  cursor: pointer;
-}
-
-input {
-  font-size: inherit;
-  padding: 5px;
+  color: white;
 }
 
 .toggled { }
-
-.comment-container {
-  margin: 20px;
-}
-.comment-container div {
-  display: inline-block;
-  vertical-align: top;
-}
-.comment-container div input {
-  width: 300px;
-  display: inline-block;
-  margin-right: 5px;
-}
-.comment-container fieldset {
-  display: inline-block;
-  vertical-align: top;
-}
-legend {
-  font-family: Arial, Helvetica, sans-serif;
-}
-
-.comment-text {
-  display: block;
-  text-align: left;
-  width: 500px;
-}
 
 .data {
   width: 400px;
@@ -145,8 +56,20 @@ legend {
   background-image:  repeating-radial-gradient( circle at 0 0, transparent 0, #e5e5f7 10px ), repeating-linear-gradient( #b9bcf755, #e3e4fc );
   border-collapse: collapse;
 }
-.data td:nth-child(3) {
+.data td:nth-child(3), th:nth-child(3) {
   text-align: center;
+}
+.data td {
+  padding: 10px;
+}
+.data thead tr {
+  border-bottom: solid saddlebrown 2px;
+}
+.data tbody tr {
+  border-bottom: solid saddlebrown 1px;
+}
+.data tbody tr:nth-last-child(1) {
+  border-bottom: 0;
 }
 
 .numeric {
@@ -161,3 +84,7 @@ th {
   padding: 5px 10px;
   cursor: pointer;
 }
+
+.sort-list { }
+
+.check-leave { }

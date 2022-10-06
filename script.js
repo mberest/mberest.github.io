@@ -1,6 +1,28 @@
 
 const regular_img_link = "https://i.imgur.com/BrJGaCS.png";
 const regular_img_link_mouseenter = "https://i.imgur.com/qoG6zpn.png";
+const logo = "https://i.imgur.com/NPQjL3F.png";
+
+/**
+ * Get black/white text color based on luminosity of background color. Not perfect, but best I could find.
+ * adapted from https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
+ * @param {string} backgroundColor '#' followed by 6 hex digits
+ * @return {string} either "#000000" or "#FFFFFF"
+ */
+const blackOrWhite = backgroundColor=> {
+    const red = {val: parseInt(backgroundColor[1] + backgroundColor[2], 16)};
+    const green = {val: parseInt(backgroundColor[3] + backgroundColor[4], 16)};
+    const blue = {val: parseInt(backgroundColor[5] + backgroundColor[6], 16)};
+    for (const color of [red, green, blue]) {
+        color.val /= 255.0;
+        color.val = (color.val <= 0.04045) ? color.val / 12.92 :  Math.pow((color.val + 0.055) / 1.055, 2.4);
+    }
+    const L = 0.2126 * red.val + 0.7152 * green.val + 0.0722 * blue.val;
+    return (L > 0.179) ? "#000000" : "#FFFFFF";
+}
+
+// convert an rgb color to hex (reduce function is awesome)
+const rgbToHex = rgb=> "#" + rgb.match(/^rgb\((\d+), \s*(\d+), \s*(\d+)\)$/).slice(1).reduce((pv, cv)=> pv + ("0" + parseInt(cv).toString(16)).slice(-2), "");
 
 // For sorting. If both are numbers use number compare otherwise use string compare
 const compareFunc = (a, b)=> (isNaN(a) || isNaN(b)) ? a.localeCompare(b) : parseFloat(a) - parseFloat(b);
@@ -11,7 +33,7 @@ const sortLists = listElements=> {
         const listItemValues = [];
         const listItems = listElement.children;
         for (let i = 0; i < listItems.length; i++) {
-            if (listItems[i].tagName === "LI") listItemValues.push(listItems[i].innerHTML);
+            if (listItems[i].tagName === "LI") listItemValues.push(listItems[i].textContent);
         }
         listItemValues.sort(compareFunc);
         for (let i = 0; i < listItemValues.length; i++) {
@@ -73,10 +95,15 @@ getTimestampSpan = ()=> {
 
 // Stuff to do after content is loaded
 document.addEventListener("DOMContentLoaded", ()=> {
-    sortLists(document.querySelectorAll("UL, OL"));
+    // for popovers
+    const popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]')
+    const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+
+    // sort lists
+    sortLists(document.querySelectorAll(".sort-list"));
 
     // change pictures when mouse hovers
-    const images = document.querySelectorAll(".big-border img, .thumb img");
+    const images = document.querySelectorAll(".card img:not(#hello)");
     images.forEach(image=> {
         image.src = regular_img_link;
         image.addEventListener("mouseenter", ()=> {
@@ -86,6 +113,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
             images.forEach(image=> image.src = regular_img_link);
         });
     });
+    document.querySelector(".navbar img").src = logo;
 
 
     // change background color of div when clicked
@@ -93,25 +121,15 @@ document.addEventListener("DOMContentLoaded", ()=> {
     changeBackgroundElements.forEach(changeBackgroundElement=> {
         changeBackgroundElement.addEventListener("click", ()=> {
             // changeBackgroundElement.style.backgroundColor = backgroundColors[++bgColorIndex % backgroundColors.length]
-            const randomColor = Math.floor(Math.random()*16777215).toString(16);
-            const red = {val: parseInt(randomColor[0] + randomColor[1], 16)};
-            const green = {val: parseInt(randomColor[2] + randomColor[3], 16)};
-            const blue = {val: parseInt(randomColor[4] + randomColor[5], 16)};
-            changeBackgroundElement.style.backgroundColor = "#" + randomColor;
-            // adapted from https://stackoverflow.com/questions/3942878/how-to-decide-font-color-in-white-or-black-depending-on-background-color
-            [red, green, blue].forEach(color=> {
-                color.val /= 255.0;
-                color.val = (color.val <= 0.04045) ? color.val / 12.92 :  Math.pow((color.val + 0.055) / 1.055, 2.4);
-            });
-            const L = 0.2126 * red.val + 0.7152 * green.val + 0.0722 * blue.val;
-            changeBackgroundElement.style.color = (L > 0.179) ? "#000000" : "#FFFFFF";
+            const randomColor = "#" + Math.floor(Math.random()*16777215).toString(16);
+            changeBackgroundElement.style.backgroundColor = randomColor;
+            changeBackgroundElement.style.color = blackOrWhite(randomColor)
         });
     });
 
 
     // alert user when clicking link
-    const anchors = document.querySelectorAll("a");
-    anchors.forEach(anchor=> {
+    document.querySelectorAll(".check-leave").forEach(anchor=> {
         anchor.addEventListener("click", event=> {
             const leave = confirm("Are you sure you want to leave my awesome website?");
             if (!leave) {
@@ -126,9 +144,11 @@ document.addEventListener("DOMContentLoaded", ()=> {
     const toggled = document.querySelectorAll(".toggled")
     const toggledElements = {};
     toggled.forEach(element=> toggledElements[element] = element.style.display);
-    toggleButton.addEventListener("click", ()=> {
-        toggled.forEach(element=> element.style.display = (element.style.display == "none") ? toggledElements[element] : "none");
-    });
+    if (toggleButton) {
+        toggleButton.addEventListener("click", () => {
+            toggled.forEach(element => element.hidden = !element.hidden);
+        });
+    }
 
 
     // sort table
@@ -144,15 +164,28 @@ document.addEventListener("DOMContentLoaded", ()=> {
     const postComment = document.getElementById("post-comment");
     const comment = document.getElementById("comment");
     const comments = document.getElementById("comments");
-    postComment.addEventListener("click", ()=> {
-        comments.appendChild(getTimestampSpan());
-        const newComment = document.createElement("SPAN");
-        newComment.innerHTML = comment.value + "<br/>";
-        comments.appendChild(newComment);
-        comment.value = "";
-    });
-    comment.addEventListener("keypress", event=> {
-        if (event.key === "Enter") postComment.click();
+    if (postComment && comment) {
+        postComment.addEventListener("click", () => {
+            comments.appendChild(getTimestampSpan());
+            const newComment = document.createElement("SPAN");
+            newComment.innerHTML = comment.value + "<br/>";
+            comments.appendChild(newComment);
+            comment.value = "";
+        });
+        comment.addEventListener("keypress", event => {
+            if (event.key === "Enter") postComment.click();
+        });
+    }
+
+
+    // change color of second column of data table to textContent
+    const dataSecondColTDs = document.querySelectorAll(".data td:nth-child(2)");
+    dataSecondColTDs.forEach(td=> {
+        try {
+            td.style.backgroundColor = td.textContent;
+            td.style.color = blackOrWhite(rgbToHex(window.getComputedStyle(td).backgroundColor));
+        }
+        catch (e) { }
     });
 });
 
