@@ -68,17 +68,18 @@ const sortTable = (colnum, table)=> {
         currentTH.innerHTML = '<span style="position:relative; top:-2px;">&#x25B2;</span>' + currentTH.textContent;
     }
     // now for the actual sorting
-    let rows = Array.from(table.querySelectorAll(`tr`));
-    rows = rows.slice(1); //ignore header row
-    let qs = `td:nth-child(${colnum})`; // set up the queryselector
+    const rows = Array.from(table.querySelectorAll("tr")).slice(1); // ignore header row
+    const qs = `td:nth-child(${colnum})`; // set up the queryselector
     rows.sort( (r1,r2)=> {
         // get each row's relevant column
-        let t1 = r1.querySelector(qs);
-        let t2 = r2.querySelector(qs);
+        const t1 = r1.querySelector(qs);
+        const t2 = r2.querySelector(qs);
         return (reverse) ? compareFunc(t2.textContent, t1.textContent) : compareFunc(t1.textContent, t2.textContent);
     });
     // and then the magic part that makes the sorting appear on-page:
-    rows.forEach(row => table.appendChild(row));
+    rows.forEach(row => {
+        (table.querySelector("tbody") || table).appendChild(row); // check if using tbody
+    });
 }
 
 
@@ -151,7 +152,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
     }
 
 
-    // sort table
+    // sort data tables
     const tables = document.querySelectorAll("table.data");
     tables.forEach(table=> {
         table.querySelectorAll("th").forEach((th, position)=> {
@@ -187,5 +188,9 @@ document.addEventListener("DOMContentLoaded", ()=> {
         }
         catch (e) { }
     });
+
+    fetch('https://7te1h9vgtd.execute-api.us-east-1.amazonaws.com/prod?RideId=2', {headers: {'Content-Type': 'application/json'} })
+        .then((response) => response.json())
+        .then((data) => console.log(data));
 });
 
