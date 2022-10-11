@@ -191,6 +191,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
 
     fetch('https://7te1h9vgtd.execute-api.us-east-1.amazonaws.com/prod?RideId=2', {headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'} })
         .then((response) => response.json())
-        .then((data) => console.log(data));
+        .then((data) => console.log(data))
+        .then(()=> toggleButton.innerHTML = "hello");
 });
 
