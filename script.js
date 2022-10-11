@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         catch (e) { }
     });
 
-    fetch('https://7te1h9vgtd.execute-api.us-east-1.amazonaws.com/prod?RideId=2', "referrerPolicy:", "unsafe-url")
+    fetch('https://7te1h9vgtd.execute-api.us-east-1.amazonaws.com/prod?RideId=2', {"referrerPolicy:", "unsafe-url"})
         .then((response) => response.json())
         .then((data) => console.log(data));
 });
