@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", ()=> {
         catch (e) { }
     });
 
-    fetch('https://swse1934e5.execute-api.us-east-1.amazonaws.com/prod?RideId=2', {headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': 'no-cors'} })    
+    fetch('https://swse1934e5.execute-api.us-east-1.amazonaws.com/prod?RideId=2', {headers: {'Content-Type': 'application/json', 'Access-Control-Allow-Origin': '*'} })    
         .then((response) => response.json())
         .then((data) => console.log(data))
         .then(()=> toggleButton.innerHTML = "hello");
