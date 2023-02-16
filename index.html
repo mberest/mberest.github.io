@@ -1,3 +1,20 @@
-fetch('https://python-http-function-o5siu773ta-uk.a.run.app')
-  .then((response) => response.json())
-  .then((data) => console.log(data));
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <script type="text/javascript">
+          function get_stuff() {
+          fetch('https://python-http-function-o5siu773ta-uk.a.run.app')
+            .then((response) => response.json())
+            .then((data) => console.log(data));            
+          }
+          window.onload = get_stuff;
+        </script>
+    </head>
+    <body>
+      Hello
+    </body>
+</html>
+
+
